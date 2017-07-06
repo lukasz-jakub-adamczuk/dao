@@ -37,24 +37,25 @@ class GalleryImageCollection extends Collection {
     private function getGalleryImages($type, $limit = 8) {
         // $sql = 'SELECT gi.*, g.slug, gc.slug AS category_slug
         // $sql = 'SELECT ANY_VALUE(gi.id_gallery_image), gi.id_gallery, gi.name, ANY_VALUE(g.slug), ANY_VALUE(gc.slug) category_slug
-        /*$sql = 'SELECT gi.id_gallery_image, gi.id_gallery
+        // $sql = 'SELECT gi.id_gallery_image, gi.id_gallery
+        $sql = 'SELECT gi.*, g.slug, gc.slug AS category_slug
                 FROM gallery_image gi 
                 LEFT JOIN gallery g ON(g.id_gallery=gi.id_gallery)
                 LEFT JOIN gallery_category gc ON(gc.id_gallery_category=g.id_gallery_category)
-                WHERE gc.id_gallery_category=2
+                WHERE gc.id_gallery_category = '.$type.'
                 GROUP BY gi.id_gallery
                 -- GROUP BY gi.id_gallery, gi.name, gi.id_gallery_image, g.slug, category_slug
                 ORDER BY gi.id_gallery_image DESC
                 LIMIT 0,8';
-              */
-        $sql = 'SELECT ANY_VALUE(gi.id_gallery_image) id_gallery_image, ANY_VALUE(gi.name) name, gi.id_gallery, ANY_VALUE(g.slug) slug, ANY_VALUE(gc.slug) category_slug
-                FROM gallery_image gi
-                LEFT JOIN gallery g ON (g.id_gallery = gi.id_gallery)
-                LEFT JOIN gallery_category gc ON (gc.id_gallery_category = g.id_gallery_category)
-                WHERE gc.id_gallery_category = '.$type.'
-                GROUP BY gi.id_gallery
-                order by gi.id_gallery DESC
-                LIMIT 0 , '.$limit;
+              
+        // $sql = 'SELECT ANY_VALUE(gi.id_gallery_image) id_gallery_image, ANY_VALUE(gi.name) name, gi.id_gallery, ANY_VALUE(g.slug) slug, ANY_VALUE(gc.slug) category_slug
+        //         FROM gallery_image gi
+        //         LEFT JOIN gallery g ON (g.id_gallery = gi.id_gallery)
+        //         LEFT JOIN gallery_category gc ON (gc.id_gallery_category = g.id_gallery_category)
+        //         WHERE gc.id_gallery_category = '.$type.'
+        //         GROUP BY gi.id_gallery
+        //         order by gi.id_gallery DESC
+        //         LIMIT 0 , '.$limit;
         $this->query($sql);
         return $this->getRows();
     }

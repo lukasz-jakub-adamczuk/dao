@@ -37,7 +37,6 @@ class ArticleCollection extends Collection {
     }
 
     public function getArticlesForStream($limit = 6) {
-        // $sql = 'SELECT a.id_article, a.title, a.slug, a.creation_date, a.visible, u.name user_name, c.slug category_slug, c.name category_name, COUNT(ac.id_article_comment) comments, f.fragment, f.id_fragment_type
         $sql = 'SELECT a.id_article, a.title, a.slug, a.creation_date, a.visible, u.name user_name, c.slug category_slug, c.name category_name, COUNT(ac.id_article_comment) comments, f.fragment, f.id_fragment_type
                 FROM article a
                 LEFT JOIN user u ON(u.id_user=a.id_author)
@@ -47,7 +46,6 @@ class ArticleCollection extends Collection {
                 LEFT JOIN fragment f ON(f.id_fragment=of.id_fragment)
                 WHERE a.visible=1 and of.object="article" AND f.id_fragment_type=2
                 GROUP BY a.id_article
-                -- GROUP BY a.id_article, a.title, a.slug, a.creation_date, a.visible, user_name, category_slug, category_name, f.fragment, f.id_fragment_type
                 ORDER BY a.id_article DESC
                 LIMIT 0,'.$limit;
         $this->query($sql);
