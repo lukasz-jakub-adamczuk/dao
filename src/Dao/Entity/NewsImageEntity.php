@@ -1,5 +1,8 @@
 <?php
-require_once AYA_DIR.'/Dao/Entity.php';
+
+namespace Dao\Entity;
+
+use Aya\Dao\Entity;
 
 class NewsImageEntity extends Entity {
     

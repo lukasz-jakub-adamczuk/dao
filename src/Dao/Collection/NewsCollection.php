@@ -1,5 +1,8 @@
 <?php
-require_once AYA_DIR.'/Dao/Collection.php';
+
+namespace Dao\Collection;
+
+use Aya\Dao\Collection;
 
 class NewsCollection extends Collection {
     
@@ -27,6 +30,15 @@ class NewsCollection extends Collection {
         // return 'LEFT JOIN user ON(user.id_user=news.id_author) LEFT JOIN news_comment ON(news_comment.id_news=news.id_news)';
         return 'LEFT JOIN user ON(user.id_user=news.id_author) LEFT JOIN news_image ON(news_image.id_news=news.id_news)';
         // return 'LEFT JOIN user ON(user.id_user=news.id_author)';
+    }
+
+    public function getNews() {
+        $sql = 'SELECT n.*, COUNT(n.id_news) items, YEAR(n.creation_date) year 
+                FROM news n 
+                GROUP BY YEAR(n.creation_date) 
+                ORDER BY n.id_news';
+        $this->query($sql);
+        return $this->getRows();
     }
 
     public function getNewsForStream($limit = 6) {
