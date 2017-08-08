@@ -1,5 +1,8 @@
 <?php
-require_once AYA_DIR.'/Dao/Collection.php';
+
+namespace Dao\Collection;
+
+use Aya\Dao\Collection;
 
 class ArticleVerdictCollection extends Collection {
 

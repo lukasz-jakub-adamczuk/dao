@@ -14,11 +14,23 @@ class StoryCollection extends Collection {
         return 'LEFT JOIN story_category ON(story_category.id_story_category=story.id_story_category) LEFT JOIN user ON(user.id_user=story.id_author) LEFT JOIN story_comment ON(story_comment.id_story=story.id_story)';
     }
 
-    // public function getStoriesWithTitle($sTitle) {
-    // 	$this->query('SELECT article.id_article, article.title, article_category.name category FROM article LEFT JOIN article_category ON(article_category.id_article_category=article.id_article_category) WHERE title LIKE "'.$sTitle.'%" ORDER BY category, title');
+
+
+    // public function getStoriesWithTitle($title) {
+    // 	$this->query('SELECT article.id_article, article.title, article_category.name category FROM article LEFT JOIN article_category ON(article_category.id_article_category=article.id_article_category) WHERE title LIKE "'.$title.'%" ORDER BY category, title');
     // 	$this->load(-1);
     // 	return $this->getRows();
     // }
+
+    public function getStoriesForCategory($category) {
+        $sql = 'SELECT s.*, c.name category, c.slug category_slug
+                FROM story s 
+                LEFT JOIN story_category c ON(c.id_story_category=s.id_story_category) 
+                WHERE c.slug="'.$category.'" 
+                ORDER BY s.creation_date DESC';
+        $this->query($sql);
+        return $this->getRows();
+    }
 
     public function getStoriesByCategory($idCategory) {
         $sql = 'SELECT story.id_story, story.title name, story.idx

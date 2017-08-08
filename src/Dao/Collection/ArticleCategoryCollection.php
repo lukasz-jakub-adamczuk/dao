@@ -1,5 +1,8 @@
 <?php
-require_once AYA_DIR.'/Dao/Collection.php';
+
+namespace Dao\Collection;
+
+use Aya\Dao\Collection;
 
 class ArticleCategoryCollection extends Collection {
     
@@ -25,6 +28,16 @@ class ArticleCategoryCollection extends Collection {
                 WHERE c.visible = 1
                 -- GROUP BY a.id_article_category
                 ORDER BY c.idx';
+        $this->query($sql);
+        return $this->getRows();
+    }
+
+    public function getCategoriesWithCounters() {
+        $sql = 'SELECT c.*, COUNT(a.id_article) items
+                FROM article a 
+                LEFT JOIN article_category c
+                    ON(c.id_article_category=a.id_article_category)
+                GROUP BY a.id_article_category';
         $this->query($sql);
         return $this->getRows();
     }
