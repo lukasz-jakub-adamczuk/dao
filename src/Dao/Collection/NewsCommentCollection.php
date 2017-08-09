@@ -14,11 +14,11 @@ class NewsCommentCollection extends Collection {
         return 'LEFT JOIN user ON(user.id_user=news_comment.id_author) LEFT JOIN news ON(news.id_news=news_comment.id_news)';
     }
 
-    public function getCommentsById($mId) {
+    public function getCommentsById($id) {
         $sql = 'SELECT nc.*, u.name author_name 
                 FROM news_comment nc 
                 LEFT JOIN user u ON(u.id_user=nc.id_author) 
-                WHERE nc.id_news='.$mId.'';
+                WHERE nc.id_news='.$id.'';
         $this->query($sql);
         return $this->getRows();
     }

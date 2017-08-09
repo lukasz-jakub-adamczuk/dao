@@ -25,7 +25,7 @@ class CommentsCollection extends Collection {
         return $this->getOne($sql);
     }
 
-    public function getCommentsById($sType, $mId) {
+    public function getCommentsById($sType, $id) {
         // table name and primary key in such collection are various
         $this->_mId = 'id_'.$sType.'_comment';
         $this->_sTable = $sType.'_comment';
@@ -33,7 +33,7 @@ class CommentsCollection extends Collection {
         $sql = 'SELECT c.*, u.id_user id_author, u.name author_name, u.slug author_slug 
                 FROM '.$sType.'_comment c 
                 LEFT JOIN user u ON(u.id_user=c.id_author) 
-                WHERE c.id_'.$sType.'='.$mId.' AND c.visible=1';
+                WHERE c.id_'.$sType.'='.$id.' AND c.visible=1';
         $this->query($sql);
         return $this->getRows();
     }

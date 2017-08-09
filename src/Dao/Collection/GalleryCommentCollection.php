@@ -14,11 +14,11 @@ class GalleryCommentCollection extends Collection {
     // 	return 'LEFT JOIN user ON(user.id_user=gallery_comment.id_author) LEFT JOIN gallery ON(gallery.id_gallery=gallery_comment.id_gallery) LEFT JOIN gallery_category ON(gallery_category.id_gallery_category=gallery.id_gallery_category)';
     // }
 
-    public function getCommentsById($mId) {
+    public function getCommentsById($id) {
         $sql = 'SELECT gc.*, u.name author_name 
                 FROM gallery_comment gc 
                 LEFT JOIN user u ON(u.id_user=gc.id_author) 
-                WHERE gc.id_gallery='.$mId.'';
+                WHERE gc.id_gallery='.$id.'';
         $this->query($sql);
         return $this->getRows();
     }
