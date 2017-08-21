@@ -7,11 +7,11 @@ use Aya\Dao\Collection;
 class ArticleCollection extends Collection {
 
     public function getSelectPart() {
-        return 'SELECT a.*, c.name category, user.name author, COUNT(article_comment.id_article_comment) comments';
+        return 'SELECT article.*, article_category.name category, user.name author, COUNT(article_comment.id_article_comment) comments';
     }
 
     public function getJoinPart() {
-        return 'LEFT JOIN article_category ON(c.id_article_category=a.id_article_category) LEFT JOIN user ON(user.id_user=a.id_author) LEFT JOIN article_comment ON(article_comment.id_article=a.id_article)';
+        return 'LEFT JOIN article_category ON(article_category.id_article_category=article.id_article_category) LEFT JOIN user ON(user.id_user=article.id_author) LEFT JOIN article_comment ON(article_comment.id_article=article.id_article)';
     }
 
     public function getArticles() {
@@ -20,6 +20,21 @@ class ArticleCollection extends Collection {
                 ORDER BY idx, title';
         $this->query($sql);
         return $this->getRows();
+    }
+
+    public function getArticlesCategories() {
+    	$sql = 'SELECT id_article_category, COUNT( id_article ) total
+                FROM  `article` 
+                GROUP BY id_article_category';
+    	return $this->_db->getArray($sql, 'id_article_category');
+    }
+
+    public function getArticlesCategoriesVerified() {
+    	$sql = 'SELECT id_article_category, COUNT( id_article ) good
+                FROM  `article` 
+                WHERE verified = 1
+                GROUP BY id_article_category';
+    	return $this->_db->getArray($sql, 'id_article_category');
     }
 
     public function getArticlesByTitle($title, $bNegate = false) {

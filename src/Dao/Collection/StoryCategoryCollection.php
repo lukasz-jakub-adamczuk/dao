@@ -7,8 +7,8 @@ use Aya\Dao\Collection;
 class StoryCategoryCollection extends Collection {
     
     public function getCategories() {
-        $sql = 'SELECT story_category.id_story_category, story_category.name, story_category.slug, story_category.abbr
-                FROM story_category
+        $sql = 'SELECT c.id_story_category, c.name, c.slug, c.abbr
+                FROM story_category c
                 WHERE `visible`=1
                 ORDER BY name';
         $this->query($sql);

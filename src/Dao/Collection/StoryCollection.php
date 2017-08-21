@@ -22,6 +22,21 @@ class StoryCollection extends Collection {
     // 	return $this->getRows();
     // }
 
+    public function getStoriesCategories() {
+    	$sql = 'SELECT id_story_category, COUNT( id_story ) total
+                FROM  `story` 
+                GROUP BY id_story_category';
+    	return $this->_db->getArray($sql, 'id_story_category');
+    }
+
+    public function getStoriesCategoriesVerified() {
+    	$sql = 'SELECT id_story_category, COUNT( id_story ) good
+                FROM  `story` 
+                WHERE verified = 1
+                GROUP BY id_story_category';
+    	return $this->_db->getArray($sql, 'id_story_category');
+    }
+
     public function getStoriesForCategory($category) {
         $sql = 'SELECT s.*, c.name category, c.slug category_slug
                 FROM story s 
