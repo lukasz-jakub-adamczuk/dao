@@ -5,6 +5,14 @@ namespace Dao\Collection;
 use Aya\Dao\Collection;
 
 class NewsCollection extends Collection {
+
+    public function getSelectPart() {
+        return 'SELECT news.*, user.name author, COUNT(news_image.id_news_image) images, COUNT(news_comment.id_news_comment) comments';
+    }
+
+    public function getJoinPart() {
+        return 'LEFT JOIN user ON(user.id_user=news.id_author) LEFT JOIN news_image ON(news_image.id_news=news.id_news) LEFT JOIN news_comment ON(news_comment.id_news=news.id_news)';
+    }
     
     public function getNews() {
         $sql = 'SELECT n.*, COUNT(n.id_news) items, YEAR(n.creation_date) year 
