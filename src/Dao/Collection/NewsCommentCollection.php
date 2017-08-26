@@ -18,7 +18,7 @@ class NewsCommentCollection extends Collection {
         $sql = 'SELECT nc.*, u.name author_name 
                 FROM news_comment nc 
                 LEFT JOIN user u ON(u.id_user=nc.id_author) 
-                WHERE nc.id_news='.$id.'';
+                WHERE nc.id_news='.$id.' AND nc.visible=1';
         $this->query($sql);
         return $this->getRows();
     }

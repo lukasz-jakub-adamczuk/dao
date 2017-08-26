@@ -18,8 +18,13 @@ class GalleryCommentCollection extends Collection {
         $sql = 'SELECT gc.*, u.name author_name 
                 FROM gallery_comment gc 
                 LEFT JOIN user u ON(u.id_user=gc.id_author) 
-                WHERE gc.id_gallery='.$id.'';
+                WHERE gc.id_gallery='.$id.' AND gc.visible=1';
         $this->query($sql);
         return $this->getRows();
+    }
+
+    public function howManyCommentsWroteUser($id) {
+        $sql = 'SELECT COUNT(id_gallery_comment) FROM gallery_comment WHERE id_author="'.$id.'"';
+        return $this->getOne($sql);
     }
 }

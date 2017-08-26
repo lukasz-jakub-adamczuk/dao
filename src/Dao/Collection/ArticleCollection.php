@@ -37,6 +37,16 @@ class ArticleCollection extends Collection {
     	return $this->_db->getArray($sql, 'id_article_category');
     }
 
+    public function getArticlesForCategory($category) {
+        $sql = 'SELECT a.*, c.name category_name, c.slug category_slug
+                FROM article a 
+                LEFT JOIN article_category c ON(c.id_article_category=a.id_article_category) 
+                WHERE c.slug="'.$category.'" 
+                ORDER BY a.creation_date DESC';
+        $this->query($sql);
+        return $this->getRows();
+    }
+
     public function getArticlesByTitle($title, $bNegate = false) {
         $condition = $bNegate ? 'title NOT LIKE "'.$title.'%"' : 'title LIKE "'.$title.'%"';
         $sql = 'SELECT a.id_article, a.title, c.name category
@@ -82,6 +92,11 @@ class ArticleCollection extends Collection {
                 LIMIT 0,'.$limit;
         $this->query($sql);
         return $this->getRows();
+    }
+
+    public function howManyArticlesWroteUser($id) {
+        $sql = 'SELECT COUNT(id_article) FROM article WHERE id_author="'.$id.'"';
+        return $this->getOne($sql);
     }
 
 }

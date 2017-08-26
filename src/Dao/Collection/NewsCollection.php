@@ -24,7 +24,7 @@ class NewsCollection extends Collection {
     }
 
     public function getNewsByYear($year) {
-        $sql = 'SELECT n.*, COUNT(n.id_news) items, YEAR(n.creation_date) year, MONTH(n.creation_date) month 
+        $sql = 'SELECT n.*, COUNT(n.id_news) items, YEAR(n.creation_date) year, MONTH(n.creation_date) month, CONCAT(MONTH(n.creation_date), "/", YEAR(n.creation_date)) col
                 FROM news n 
                 WHERE YEAR(n.creation_date)='.$year.' 
                 GROUP BY MONTH(n.creation_date)';
@@ -33,7 +33,7 @@ class NewsCollection extends Collection {
     }
 
     public function getNewsByMonth($year, $month) {
-        $sql = 'SELECT n.*, COUNT(n.id_news) items, u.name user, COUNT(nc.id_news_comment) comments 
+        $sql = 'SELECT n.*, COUNT(n.id_news) items, u.name user, COUNT(nc.id_news_comment) comments, CONCAT(DAY(n.creation_date), "/", n.slug) url
                 FROM news n 
                 LEFT JOIN user u ON(u.id_user=n.id_author) 
                 LEFT JOIN news_comment nc ON(nc.id_news=n.id_news) 
@@ -78,5 +78,24 @@ class NewsCollection extends Collection {
                 ORDER BY n.id_news DESC';
         $this->query($sql);
         return $this->getRows();
+    }
+
+    // TODO at this moment JOIN with comments and user are not necessary
+    public function getNewsForSearch($search) {
+        $sql = 'SELECT n.*, COUNT(n.id_news) items, u.name user, COUNT(nc.id_news_comment) comments, CONCAT(YEAR(n.creation_date), "/", MONTH(n.creation_date), "/", DAY(n.creation_date), "/", n.slug) url
+                FROM news n 
+                LEFT JOIN user u ON(u.id_user=n.id_author) 
+                LEFT JOIN news_comment nc ON(nc.id_news=n.id_news) 
+                WHERE n.title LIKE "%'.$search.'%" 
+                GROUP BY n.id_news 
+                ORDER BY n.id_news DESC
+                LIMIT 0,30';
+        $this->query($sql);
+        return $this->getRows();
+    }
+
+    public function howManyNewsWroteUser($id) {
+        $sql = 'SELECT COUNT(id_news) FROM news WHERE id_author="'.$id.'"';
+        return $this->getOne($sql);
     }
 }

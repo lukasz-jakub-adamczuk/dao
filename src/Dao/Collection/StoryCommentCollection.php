@@ -18,8 +18,13 @@ class StoryCommentCollection extends Collection {
         $sql = 'SELECT sc.*, u.name author_name 
                 FROM story_comment sc 
                 LEFT JOIN user u ON(u.id_user=sc.id_author) 
-                WHERE sc.id_story='.$id.'';
+                WHERE sc.id_story='.$id.' AND sc.visible=1';
         $this->query($sql);
         return $this->getRows();
+    }
+
+    public function howManyCommentsWroteUser($id) {
+        $sql = 'SELECT COUNT(id_story_comment) FROM story_comment WHERE id_author="'.$id.'"';
+        return $this->getOne($sql);
     }
 }

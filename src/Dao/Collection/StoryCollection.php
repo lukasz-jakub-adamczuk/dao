@@ -38,10 +38,14 @@ class StoryCollection extends Collection {
     }
 
     public function getStoriesForCategory($category) {
-        $sql = 'SELECT s.*, c.name category, c.slug category_slug
+        // $sql = 'SELECT s.*, c.name category_name, c.slug category_slug, f.fragment
+        $sql = 'SELECT s.*, c.name category_name, c.slug category_slug
                 FROM story s 
                 LEFT JOIN story_category c ON(c.id_story_category=s.id_story_category) 
-                WHERE c.slug="'.$category.'" 
+                -- LEFT JOIN object_fragment of ON(of.id_object=s.id_story)
+                -- LEFT JOIN fragment f ON(f.id_fragment=of.id_fragment)
+                -- WHERE c.slug="'.$category.'" AND s.visible=1 AND of.object="story"
+                WHERE c.slug="'.$category.'" AND s.visible=1
                 ORDER BY s.creation_date DESC';
         $this->query($sql);
         return $this->getRows();
@@ -72,5 +76,10 @@ class StoryCollection extends Collection {
                 LIMIT 0,'.$limit;
         $this->query($sql);
         return $this->getRows();
+    }
+
+    public function howManyStoriesWroteUser($id) {
+        $sql = 'SELECT COUNT(id_story) FROM story WHERE id_author="'.$id.'"';
+        return $this->getOne($sql);
     }
 }
