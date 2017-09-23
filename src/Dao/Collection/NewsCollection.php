@@ -24,7 +24,7 @@ class NewsCollection extends Collection {
     }
 
     public function getNewsByYear($year) {
-        $sql = 'SELECT n.*, COUNT(n.id_news) items, YEAR(n.creation_date) year, MONTH(n.creation_date) month, CONCAT(MONTH(n.creation_date), "/", YEAR(n.creation_date)) col
+        $sql = 'SELECT n.*, COUNT(n.id_news) items, YEAR(n.creation_date) year, DATE_FORMAT(n.creation_date, "%m") month, CONCAT(DATE_FORMAT(n.creation_date, "%m"), "/", YEAR(n.creation_date)) col
                 FROM news n 
                 WHERE YEAR(n.creation_date)='.$year.' 
                 GROUP BY MONTH(n.creation_date)';
@@ -33,7 +33,7 @@ class NewsCollection extends Collection {
     }
 
     public function getNewsByMonth($year, $month) {
-        $sql = 'SELECT n.*, COUNT(n.id_news) items, u.name user, COUNT(nc.id_news_comment) comments, CONCAT(DAY(n.creation_date), "/", n.slug) url
+        $sql = 'SELECT n.*, COUNT(n.id_news) items, u.name user, COUNT(nc.id_news_comment) comments, CONCAT(DATE_FORMAT(n.creation_date, "%d"), "/", n.slug) url
                 FROM news n 
                 LEFT JOIN user u ON(u.id_user=n.id_author) 
                 LEFT JOIN news_comment nc ON(nc.id_news=n.id_news) 

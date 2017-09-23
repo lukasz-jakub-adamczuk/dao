@@ -7,20 +7,12 @@ use Aya\Dao\Collection;
 class NewsCommentCollection extends Collection {
     
     public function getSelectPart() {
-        return 'SELECT news_comment.*, user.name author, news.title object_name, news.slug object_slug';
+        return 'SELECT news_comment.*, u.name author, n.title object_name, n.slug object_slug, REPLACE(DATE(n.creation_date), "-", "/") newsdate';
     }
 
     public function getJoinPart() {
-        return 'LEFT JOIN user ON(user.id_user=news_comment.id_author) LEFT JOIN news ON(news.id_news=news_comment.id_news)';
-    }
-
-    public function getCommentsById($id) {
-        $sql = 'SELECT nc.*, u.name author_name 
-                FROM news_comment nc 
-                LEFT JOIN user u ON(u.id_user=nc.id_author) 
-                WHERE nc.id_news='.$id.' AND nc.visible=1';
-        $this->query($sql);
-        return $this->getRows();
+        return 'LEFT JOIN user u ON(u.id_user=news_comment.id_author)
+                LEFT JOIN news n ON(n.id_news=news_comment.id_news)';
     }
 
     public function getComments($mVisible = null) {

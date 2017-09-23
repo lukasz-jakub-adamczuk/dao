@@ -7,7 +7,7 @@ use Aya\Dao\Entity;
 class GalleryEntity extends Entity {
     
     public function getGallery($gallerySlug, $categorySlug) {
-        $sql = 'SELECT gi.*, g.name name, c.name category_name, c.slug category_slug, u.name author_name 
+        $sql = 'SELECT gi.*, g.name name, g.slug slug, c.name category_name, c.slug category_slug, u.name author_name 
                 FROM gallery_image gi 
                 LEFT JOIN gallery g ON(g.id_gallery=gi.id_gallery) 
                 LEFT JOIN gallery_category c ON(c.id_gallery_category=g.id_gallery_category) 

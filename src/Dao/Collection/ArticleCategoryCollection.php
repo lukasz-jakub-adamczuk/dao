@@ -37,7 +37,8 @@ class ArticleCategoryCollection extends Collection {
                 FROM article a 
                 LEFT JOIN article_category c
                     ON(c.id_article_category=a.id_article_category)
-                GROUP BY a.id_article_category';
+                GROUP BY a.id_article_category
+                ORDER BY c.idx';
         $this->query($sql);
         return $this->getRows();
     }

@@ -18,7 +18,7 @@ class ArticleVerdictCollection extends Collection {
         $sql = 'SELECT av.*, u.name author_name, u.slug author_slug
                 FROM article_verdict av 
                 LEFT JOIN user u ON(u.id_user=av.id_author) 
-                WHERE av.id_article='.$id.'';
+                WHERE av.id_article='.$id.' AND av.visible=1';
         $this->query($sql);
         return $this->getRows();
     }

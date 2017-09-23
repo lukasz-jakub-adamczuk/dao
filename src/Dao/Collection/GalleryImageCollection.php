@@ -41,7 +41,7 @@ class GalleryImageCollection extends Collection {
         // $sql = 'SELECT gi.*, g.slug, gc.slug AS category_slug
         // $sql = 'SELECT ANY_VALUE(gi.id_gallery_image), gi.id_gallery, gi.name, ANY_VALUE(g.slug), ANY_VALUE(gc.slug) category_slug
         // $sql = 'SELECT gi.id_gallery_image, gi.id_gallery
-        $sql = 'SELECT gi.*, g.slug, gc.slug AS category_slug
+        $sql = 'SELECT gi.*, g.slug AS gallery_name, gc.slug AS category_slug, gc.name AS category_name
                 FROM gallery_image gi 
                 LEFT JOIN gallery g ON(g.id_gallery=gi.id_gallery)
                 LEFT JOIN gallery_category gc ON(gc.id_gallery_category=g.id_gallery_category)

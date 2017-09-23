@@ -24,14 +24,14 @@ class ArticleCollection extends Collection {
 
     public function getArticlesCategories() {
     	$sql = 'SELECT id_article_category, COUNT( id_article ) total
-                FROM  `article` 
+                FROM `article` 
                 GROUP BY id_article_category';
     	return $this->_db->getArray($sql, 'id_article_category');
     }
 
     public function getArticlesCategoriesVerified() {
     	$sql = 'SELECT id_article_category, COUNT( id_article ) good
-                FROM  `article` 
+                FROM `article` 
                 WHERE verified = 1
                 GROUP BY id_article_category';
     	return $this->_db->getArray($sql, 'id_article_category');
@@ -41,8 +41,8 @@ class ArticleCollection extends Collection {
         $sql = 'SELECT a.*, c.name category_name, c.slug category_slug
                 FROM article a 
                 LEFT JOIN article_category c ON(c.id_article_category=a.id_article_category) 
-                WHERE c.slug="'.$category.'" 
-                ORDER BY a.creation_date DESC';
+                WHERE c.slug="'.$category.'"
+                ORDER BY a.idx';
         $this->query($sql);
         return $this->getRows();
     }
@@ -60,7 +60,7 @@ class ArticleCollection extends Collection {
 
     public function getArticlesByCategory($category) {
         $condition = is_numeric($category) ? 'a.id_article_category = "'.$category.'"' : 'c.slug="'.$category.'"';
-        $sql = 'SELECT a.*, c.slug category_slug
+        $sql = 'SELECT a.*, c.name category_name, c.slug category_slug, CONCAT(c.slug, "/", a.slug) url
                 FROM article a
                 LEFT JOIN article_category c ON(c.id_article_category=a.id_article_category) 
                 WHERE '.$condition.'

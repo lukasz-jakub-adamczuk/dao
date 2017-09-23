@@ -7,24 +7,12 @@ use Aya\Dao\Collection;
 class StoryCommentCollection extends Collection {
     
     public function getSelectPart() {
-        return 'SELECT story_comment.*, user.name author, story.title object_name, story.slug object_slug, story_category.name category_name, story_category.slug category_slug';
+        return 'SELECT story_comment.*, u.name author, s.title object_name, s.slug object_slug, c.name category_name, c.slug category_slug';
     }
 
     public function getJoinPart() {
-        return 'LEFT JOIN user ON(user.id_user=story_comment.id_author) LEFT JOIN story ON(story.id_story=story_comment.id_story) LEFT JOIN story_category ON(story_category.id_story_category=story.id_story_category)';
-    }
-
-    public function getCommentsById($id) {
-        $sql = 'SELECT sc.*, u.name author_name 
-                FROM story_comment sc 
-                LEFT JOIN user u ON(u.id_user=sc.id_author) 
-                WHERE sc.id_story='.$id.' AND sc.visible=1';
-        $this->query($sql);
-        return $this->getRows();
-    }
-
-    public function howManyCommentsWroteUser($id) {
-        $sql = 'SELECT COUNT(id_story_comment) FROM story_comment WHERE id_author="'.$id.'"';
-        return $this->getOne($sql);
+        return 'LEFT JOIN user u ON(u.id_user=story_comment.id_author)
+                LEFT JOIN story s ON(s.id_story=story_comment.id_story)
+                LEFT JOIN story_category c ON(c.id_story_category=s.id_story_category)';
     }
 }
