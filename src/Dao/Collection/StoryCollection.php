@@ -78,6 +78,18 @@ class StoryCollection extends Collection {
         return $this->getRows();
     }
 
+    public function mostActiveAuthors() {
+        $sql = 'SELECT s.id_story, COUNT(s.id_story) total, u.id_user, u.name, u.slug 
+                FROM story s
+                LEFT JOIN user u ON(u.id_user=s.id_author) 
+                WHERE s.id_author > 0 AND u.id_user IS NOT NULL
+                GROUP BY s.id_author 
+                ORDER BY total DESC 
+                LIMIT 0, 10';
+        $this->query($sql);
+        return $this->getRows();
+    }
+
     public function howManyStoriesWroteUser($id) {
         $sql = 'SELECT COUNT(id_story) FROM story WHERE id_author="'.$id.'"';
         return $this->getOne($sql);

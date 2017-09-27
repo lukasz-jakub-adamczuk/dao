@@ -94,6 +94,18 @@ class NewsCollection extends Collection {
         return $this->getRows();
     }
 
+    public function mostActiveAuthors() {
+        $sql = 'SELECT n.id_news, COUNT(n.id_news) total, u.id_user, u.name, u.slug 
+                FROM news n
+                LEFT JOIN user u ON(u.id_user=n.id_author) 
+                WHERE n.id_author > 0 AND u.id_user IS NOT NULL
+                GROUP BY n.id_author 
+                ORDER BY total DESC 
+                LIMIT 0, 10';
+        $this->query($sql);
+        return $this->getRows();
+    }
+
     public function howManyNewsWroteUser($id) {
         $sql = 'SELECT COUNT(id_news) FROM news WHERE id_author="'.$id.'"';
         return $this->getOne($sql);

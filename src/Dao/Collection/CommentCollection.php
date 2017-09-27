@@ -7,8 +7,8 @@ use Aya\Dao\Collection;
 class CommentCollection extends Collection {
     
     public function getAllComments($mVisible = null) {
-        $sql = 'SELECT COUNT(id_news_comment)
-                FROM news_comment';
+        $sql = 'SELECT COUNT(id_'.$type.'_comment)
+                FROM '.$type.'_comment';
 
         if (!is_null($mVisible)) {
             $sql .= ' WHERE visible='.(int)$mVisible.'';
@@ -34,6 +34,21 @@ class CommentCollection extends Collection {
                 FROM '.$type.'_comment c 
                 LEFT JOIN user u ON(u.id_user=c.id_author) 
                 WHERE c.id_'.$type.'='.$id.'';
+        $this->query($sql);
+        return $this->getRows();
+    }
+
+    public function mostActiveAuthors($type) {
+        $this->setTable($type.'_comment');
+        $this->setPrimaryKey('id_'.$type.'_comment');
+
+        $sql = 'SELECT c.id_'.$type.'_comment, COUNT(c.id_'.$type.'_comment) total, u.id_user, u.name, u.slug 
+                FROM '.$type.'_comment c
+                LEFT JOIN user u ON(u.id_user=c.id_author) 
+                WHERE c.id_author > 0 AND u.id_user IS NOT NULL
+                GROUP BY c.id_author 
+                ORDER BY total DESC 
+                LIMIT 0, 10';
         $this->query($sql);
         return $this->getRows();
     }

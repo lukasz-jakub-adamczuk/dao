@@ -23,4 +23,15 @@ class ArticleVerdictCollection extends Collection {
         return $this->getRows();
     }
 
+    public function mostActiveAuthors() {
+        $sql = 'SELECT av.id_article_verdict, COUNT(av.id_article_verdict) total, u.id_user, u.name, u.slug 
+                FROM article_verdict av
+                LEFT JOIN user u ON(u.id_user=av.id_author) 
+                WHERE av.id_author <> 0 AND av.id_article_verdict <> 0 
+                GROUP BY av.id_author 
+                ORDER BY total DESC 
+                LIMIT 0, 10';
+        $this->query($sql);
+        return $this->getRows();
+    }
 }

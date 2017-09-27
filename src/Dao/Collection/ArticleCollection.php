@@ -94,6 +94,18 @@ class ArticleCollection extends Collection {
         return $this->getRows();
     }
 
+    public function mostActiveAuthors() {
+        $sql = 'SELECT a.id_article, COUNT(a.id_article) total, u.id_user, u.name, u.slug 
+                FROM article a
+                LEFT JOIN user u ON(u.id_user=a.id_author) 
+                WHERE a.id_author > 0 AND u.id_user IS NOT NULL
+                GROUP BY a.id_author 
+                ORDER BY total DESC 
+                LIMIT 0, 10';
+        $this->query($sql);
+        return $this->getRows();
+    }
+
     public function howManyArticlesWroteUser($id) {
         $sql = 'SELECT COUNT(id_article) FROM article WHERE id_author="'.$id.'"';
         return $this->getOne($sql);
