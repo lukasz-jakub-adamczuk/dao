@@ -22,14 +22,14 @@ class ArticleCollection extends Collection {
         return $this->getRows();
     }
 
-    public function getArticlesCategories() {
+    public function getArticleCategories() {
     	$sql = 'SELECT id_article_category, COUNT( id_article ) total
                 FROM `article` 
                 GROUP BY id_article_category';
     	return $this->_db->getArray($sql, 'id_article_category');
     }
 
-    public function getArticlesCategoriesVerified() {
+    public function getArticleCategoriesVerified() {
     	$sql = 'SELECT id_article_category, COUNT( id_article ) good
                 FROM `article` 
                 WHERE verified = 1
