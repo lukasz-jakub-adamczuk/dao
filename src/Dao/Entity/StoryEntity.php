@@ -18,7 +18,7 @@ class StoryEntity extends Entity {
 
     public function getStoryByOldUrl($url) {
         $sql = 'SELECT s.*, c.name category_name, c.slug category_slug, u.slug author_slug, u.name author_name 
-                    FROM story c 
+                    FROM story s 
                     LEFT JOIN story_category c ON(c.id_story_category=s.id_story_category) 
                     LEFT JOIN user u ON(u.id_user=s.id_author) 
                     WHERE s.old_url="'.$url.'" ';

@@ -82,7 +82,7 @@ class NewsCollection extends Collection {
 
     // TODO at this moment JOIN with comments and user are not necessary
     public function getNewsForSearch($search) {
-        $sql = 'SELECT n.*, COUNT(n.id_news) items, u.name user, COUNT(nc.id_news_comment) comments, CONCAT(YEAR(n.creation_date), "/", MONTH(n.creation_date), "/", DAY(n.creation_date), "/", n.slug) url
+        $sql = 'SELECT n.*, COUNT(n.id_news) items, u.name user, COUNT(nc.id_news_comment) comments, CONCAT(YEAR(n.creation_date), "/", DATE_FORMAT(n.creation_date, "%m"), "/", DATE_FORMAT(n.creation_date, "%d"), "/", n.slug) url
                 FROM news n 
                 LEFT JOIN user u ON(u.id_user=n.id_author) 
                 LEFT JOIN news_comment nc ON(nc.id_news=n.id_news) 
