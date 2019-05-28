@@ -57,7 +57,7 @@ class StoryCollection extends Collection {
                 WHERE id_story_category = "'.$idCategory.'"
                 ORDER BY idx, title';
         $this->query($sql);
-        $this->load(-1);
+        // $this->load(-1);
         return $this->getRows();
     }
 

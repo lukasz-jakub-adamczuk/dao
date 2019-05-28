@@ -23,6 +23,30 @@ class UserEntity extends Entity {
         return $this->getFields();
     }
 
+    public function doesUserNameExists($name) {
+        $sql = 'SELECT id_user
+                FROM user
+                WHERE name="'.$name.'"';
+        $this->query($sql);
+        return $this->getFields();
+    }
+
+    public function doesUserSlugExists($slug) {
+        $sql = 'SELECT id_user
+                FROM user
+                WHERE slug="'.$slug.'"';
+        $this->query($sql);
+        return $this->getFields();
+    }
+
+    public function doesUserEmailExists($email) {
+        $sql = 'SELECT id_user
+                FROM user
+                WHERE email="'.$email.'"';
+        $this->query($sql);
+        return $this->getFields();
+    }
+
     public function getAuthenticatedUser($id) {
         $cond = 'WHERE u.id_user="'.$id.'"';
         return $this->_getAuthenticatedUserDetails($cond);
@@ -35,12 +59,12 @@ class UserEntity extends Entity {
     }
 
     private function _getAuthenticatedUserDetails($cond) {
-        $sql = 'SELECT u.*, ug.slug group_slug, ug.name group_name, up.*
+        $sql = 'SELECT u.*, ug.slug group_slug, ug.name group_name
                 FROM user u
                 LEFT JOIN user_group ug ON(ug.id_user_group=u.id_user_group)
-                LEFT JOIN user_permission up ON(up.id_user=u.id_user)
+                -- LEFT JOIN user_permission up ON(up.id_user=u.id_user)
                 '.$cond.'';
         $this->query($sql);
-        return $this->getFields();
+        return $this->getFields(true);
     }
 }

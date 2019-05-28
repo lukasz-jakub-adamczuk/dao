@@ -12,7 +12,7 @@ class StoryCategoryCollection extends Collection {
                 WHERE `visible`=1
                 ORDER BY name';
         $this->query($sql);
-        $this->load(-1);
+        // $this->load(-1);
         return $this->getRows();
     }
 

@@ -7,7 +7,7 @@ use Aya\Dao\Collection;
 class CupBattleCollection extends Collection {
 
     public function getBattles($cupSlug) {
-        $sql = 'SELECT cb.*, cp1.name name1, cp2.name name2, cp1.slug slug1, cp2.slug slug2
+        $sql = 'SELECT cb.*, c.slug, cp1.name name1, cp2.name name2, cp1.slug slug1, cp2.slug slug2
                 FROM cup_battle cb
                 LEFT JOIN cup c ON (c.id_cup=cb.id_cup)
                 LEFT JOIN cup_player cp1 ON (cp1.id_cup_player=cb.player1)
@@ -40,7 +40,7 @@ class CupBattleCollection extends Collection {
         return $this->getRows();
     }
 
-    public function getPlayerRecentStats($player, $battleDate) {
+    public function getPlayerStatsFromBattles($player, $battleDate) {
         $sql = 'SELECT 
                     id_cup_battle,
                     SUM(IF(id_cup_battle, 1, 0)) AS matches,
